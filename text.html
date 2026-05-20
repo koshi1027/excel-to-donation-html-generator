@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文案＋圖片指令產生器</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F7F3EE;
+    --cream-dark: #EDE7DC;
+    --brown-light: #C4A882;
+    --brown: #8B6F52;
+    --brown-dark: #5C4A35;
+    --text: #3A2E24;
+    --text-muted: #8B7B6B;
+    --text-hint: #B5A594;
+    --teal: #6B9E8F;
+    --teal-light: #E8F3F0;
+    --teal-dark: #4A7A6C;
+    --purple-light: #EEE8F5;
+    --purple: #8B76A8;
+    --purple-dark: #5C4A7A;
+    --border: rgba(139, 111, 82, 0.18);
+    --border-strong: rgba(139, 111, 82, 0.35);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .page-wrap {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding-top: 1rem;
+  }
+  .header-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--brown-light);
+    margin-bottom: 0.6rem;
+  }
+  .header h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--brown-dark);
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+  }
+  .header p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+  .header-line {
+    width: 40px;
+    height: 1.5px;
+    background: var(--brown-light);
+    margin: 1rem auto 0;
+    border-radius: 2px;
+  }
+
+  /* Cards */
+  .card {
+    background: #FFFCF8;
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 6px rgba(92,74,53,0.04);
+  }
+
+  .section-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+  .badge-base { background: var(--cream-dark); color: var(--brown-dark); }
+  .badge-copy { background: var(--purple-light); color: var(--purple-dark); }
+  .badge-img  { background: var(--teal-light); color: var(--teal-dark); }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-hint);
+    margin-bottom: 0.75rem;
+  }
+
+  /* Fields */
+  .field-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 0.85rem;
+  }
+  .field-label {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    min-width: 100px;
+    padding-top: 8px;
+    flex-shrink: 0;
+    line-height: 1.4;
+  }
+  .field-input { flex: 1; }
+
+  input[type="text"] {
+    width: 100%;
+    background: var(--cream);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13.5px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  input[type="text"]::placeholder { color: var(--text-hint); }
+  input[type="text"]:focus { border-color: var(--brown-light); }
+
+  /* Chips */
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 2px; }
+  .chip {
+    font-size: 12px;
+    padding: 5px 11px;
+    border-radius: 20px;
+    border: 0.5px solid var(--border-strong);
+    background: var(--cream);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .chip:hover { border-color: var(--brown-light); color: var(--brown-dark); }
+  .chip.ap {
+    background: var(--purple-light);
+    border-color: var(--purple);
+    color: var(--purple-dark);
+    font-weight: 500;
+  }
+  .chip.at {
+    background: var(--teal-light);
+    border-color: var(--teal);
+    color: var(--teal-dark);
+    font-weight: 500;
+  }
+
+  /* Divider */
+  .divider { border: none; border-top: 0.5px solid var(--border); margin: 1rem 0; }
+
+  /* Buttons */
+  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1.25rem; }
+  .btn {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    padding: 9px 20px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.15s;
+    border: 0.5px solid var(--border-strong);
+  }
+  .btn-main {
+    background: var(--brown-dark);
+    color: #FFF8F0;
+    border-color: var(--brown-dark);
+    font-weight: 500;
+  }
+  .btn-main:hover { background: var(--brown); border-color: var(--brown); }
+  .btn-sec {
+    background: transparent;
+    color: var(--text-muted);
+  }
+  .btn-sec:hover { background: var(--cream-dark); color: var(--text); }
+
+  /* Output */
+  .output-section { margin-top: 1.5rem; }
+  .out-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-hint);
+    margin-bottom: 0.5rem;
+  }
+  .out-box {
+    background: #FFFCF8;
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1.1rem 1.25rem;
+    font-size: 13px;
+    line-height: 1.85;
+    color: var(--text);
+    white-space: pre-wrap;
+    word-break: break-word;
+    min-height: 100px;
+    font-family: 'Noto Sans TC', sans-serif;
+    box-shadow: 0 1px 4px rgba(92,74,53,0.04);
+  }
+  .out-box.teal { border-left: 2px solid var(--teal); }
+  .out-box.purple { border-left: 2px solid var(--purple); }
+
+  .copy-hint {
+    font-size: 12px;
+    color: var(--teal-dark);
+    margin-top: 8px;
+    display: none;
+    text-align: right;
+  }
+
+  /* Tip */
+  .tip {
+    background: var(--teal-light);
+    border: 0.5px solid rgba(107,158,143,0.3);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--teal-dark);
+    line-height: 1.6;
+    margin-top: 1.5rem;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 3rem;
+    font-size: 11.5px;
+    color: var(--text-hint);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 480px) {
+    .field-row { flex-direction: column; gap: 6px; }
+    .field-label { min-width: unset; padding-top: 0; }
+    .card { padding: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <header class="header">
+    <div class="header-eyebrow">生活感文案工具</div>
+    <h1>文案＋圖片指令產生器</h1>
+    <p>填入資訊 → 產出文案指令＋Nano Banana 圖片指令 🍌</p>
+    <div class="header-line"></div>
+  </header>
+
+  <!-- 產品基本資訊 -->
+  <div class="card">
+    <div class="section-label">產品 / 主題</div>
+    <div class="field-row">
+      <span class="field-label">產品或主題</span>
+      <div class="field-input"><input type="text" id="product" placeholder="例：保濕精華、咖啡訂閱盒、瑜珈課程…" /></div>
+    </div>
+    <div class="field-row">
+      <span class="field-label">核心賣點</span>
+      <div class="field-input"><input type="text" id="benefit" placeholder="例：讓皮膚喝飽水、每天一杯儀式感…" /></div>
+    </div>
+    <div class="field-row">
+      <span class="field-label">目標讀者</span>
+      <div class="field-input"><input type="text" id="audience" placeholder="例：30+ 上班族女性、新手媽媽…" /></div>
+    </div>
+  </div>
+
+  <!-- 文案設定 -->
+  <div class="card">
+    <span class="section-badge badge-copy">✍️ 文案設定</span>
+
+    <div class="field-row">
+      <span class="field-label">文案起點</span>
+      <div class="field-input"><div class="chips">
+        <span class="chip ap" data-g="opening" data-v="從一個溫柔的生活小場景切入（早晨、下班後、睡前…）">生活場景</span>
+        <span class="chip" data-g="opening" data-v="從一個大家都有的小煩惱或疑問開始，自然帶出共鳴">日常困惑</span>
+        <span class="chip" data-g="opening" data-v="從一個意外的發現或某個讓自己眼睛一亮的感受開始">意外發現</span>
+        <span class="chip" data-g="opening" data-v="從一句讓人忍不住繼續讀的反問或感嘆句開始">反問鉤句</span>
+      </div></div>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">產品帶入感</span>
+      <div class="field-input"><div class="chips">
+        <span class="chip ap" data-g="product" data-v="像在跟朋友分享生活，產品只是順帶一提，不刻意強調、沒有業配感">輕輕帶過</span>
+        <span class="chip" data-g="product" data-v="全程不提產品名稱，只分享使用後的感受與生活改變，讓讀者自己好奇">完全不提</span>
+        <span class="chip" data-g="product" data-v="以「最近發現一個小東西…」或「朋友推薦我試了一下…」的方式自然帶入，讀起來像真實分享">像朋友推薦</span>
+      </div></div>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">語氣基調</span>
+      <div class="field-input"><div class="chips">
+        <span class="chip ap" data-g="tone" data-v="暖暖的、輕鬆自在，像跟熟朋友聊天">暖心朋友</span>
+        <span class="chip" data-g="tone" data-v="帶點可愛自嘲，偶爾幽默，讓人忍不住嘴角上揚">幽默自嘲</span>
+        <span class="chip" data-g="tone" data-v="平靜、有點詩意，讀起來讓人想靜下來">靜謐詩意</span>
+        <span class="chip" data-g="tone" data-v="直接、有力，帶點驚喜感">直接爽快</span>
+      </div></div>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">字數篇幅</span>
+      <div class="field-input"><div class="chips">
+        <span class="chip ap" data-g="length" data-v="150–250字，IG 貼文長度">短（IG）</span>
+        <span class="chip" data-g="length" data-v="300–450字，FB 貼文長度">中（FB）</span>
+        <span class="chip" data-g="length" data-v="600字以上，部落格深度分享感">長（深度）</span>
+      </div></div>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">結尾方向</span>
+      <div class="field-input"><div class="chips">
+        <span class="chip ap" data-g="cta" data-v="不需要明確 CTA，讓感受自然收尾就好">自然收尾</span>
+        <span class="chip" data-g="cta" data-v="結尾輕輕拋一個問題，引導讀者留言分享自己的經驗">邀請留言</span>
+        <span class="chip" data-g="cta" data-v="結尾很自然地帶到連結或私訊，不要有推銷感">輕導流量</span>
+      </div></div>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">生活場景補充</span>
+      <div class="field-input"><input type="text" id="scene" placeholder="例：梅雨季的早晨、連續加班後的深夜…（選填）" /></div>
+    </div>
+  </div>
+
+  <!-- 圖片設定 -->
+  <div class="card">
+    <span class="section-badge badge-img">🖼️ 圖片設定</span>
+
+    <div class="field-row">
+      <span class="field-label">風格感受<br><span style="font-size:11px;color:var(--text-hint)">可複選</span></span>
+      <div class="field-input">
+        <div class="chips" id="vibes-chips">
+          <span class="chip" data-g="vibes" data-v="智慧感：畫面傳遞思考深度與從容自信的氣質">智慧</span>
+          <span class="chip" data-g="vibes" data-v="親密感：私密、柔軟，像只拍給自己看的畫面">親密</span>
+          <span class="chip" data-g="vibes" data-v="豐盛感：富足、滿溢，生活被好好對待的感覺">豐盛</span>
+          <span class="chip" data-g="vibes" data-v="自由感：輕盈、流動，不受拘束的生活狀態">自由</span>
+          <span class="chip" data-g="vibes" data-v="療癒感：讓人放鬆、舒緩，有被接住的安全感">療癒</span>
+          <span class="chip" data-g="vibes" data-v="清新感：乾淨、透亮，有呼吸到新鮮空氣的輕盈">清新</span>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:8px;align-items:center">
+          <input type="text" id="vibes-custom" placeholder="自訂風格…" style="flex:1;font-size:12px;padding:5px 10px;" />
+          <button onclick="addCustomVibe()" class="btn btn-sec" style="padding:5px 12px;font-size:12px;white-space:nowrap">＋ 加入</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">有無產品入鏡</span>
+      <div class="field-input"><div class="chips">
+        <span class="chip at" data-g="hasproduct" data-v="有產品入鏡：產品自然融入場景，不要像廣告擺拍，像是生活中隨手放著的感覺">有產品（自然入鏡）</span>
+        <span class="chip" data-g="hasproduct" data-v="無產品入鏡：純粹呈現一個情境與氛圍，讓畫面說話，不出現任何產品">無產品（純情境）</span>
+      </div></div>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">圖片主視覺</span>
+      <div class="field-input"><input type="text" id="img-subject" placeholder="例：一杯咖啡冒著熱氣、窗邊的早晨光線…（選填）" /></div>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">畫面氛圍</span>
+      <div class="field-input"><div class="chips">
+        <span class="chip at" data-g="mood" data-v="溫暖柔光，像早晨灑進來的陽光，有點朦朧、有點舒服">溫暖柔光</span>
+        <span class="chip" data-g="mood" data-v="清新自然光，乾淨背景，有透氣感">清新自然</span>
+        <span class="chip" data-g="mood" data-v="深色調，夜晚或黃昏感，靜謐沉穩的氛圍">深色靜謐</span>
+        <span class="chip" data-g="mood" data-v="活潑飽和色調，充滿能量與朝氣">活潑飽和</span>
+      </div></div>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">拍攝風格</span>
+      <div class="field-input"><div class="chips">
+        <span class="chip at" data-g="style" data-v="生活感平鋪攝影（flat lay），像真實生活隨手拍的感覺">生活感平鋪</span>
+        <span class="chip" data-g="style" data-v="精緻商業攝影風格，像雜誌或品牌形象照">商業攝影</span>
+        <span class="chip" data-g="style" data-v="溫柔手繪插畫風格，有質感的線條與色彩">插畫手繪</span>
+        <span class="chip" data-g="style" data-v="電影感，有景深虛化，畫面有故事性">電影感</span>
+      </div></div>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">比例格式</span>
+      <div class="field-input"><div class="chips">
+        <span class="chip at" data-g="ratio" data-v="4:5 直向（IG 貼文最佳比例）">4:5 IG 貼文</span>
+        <span class="chip" data-g="ratio" data-v="1:1 正方形（IG 通用格式）">1:1 正方形</span>
+        <span class="chip" data-g="ratio" data-v="9:16 直向（限時動態最佳比例）">9:16 限動</span>
+        <span class="chip" data-g="ratio" data-v="16:9 橫向（FB 封面或橫幅用）">16:9 橫向</span>
+      </div></div>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">圖片文字</span>
+      <div class="field-input"><div class="chips">
+        <span class="chip at" data-g="imgtext" data-v="圖片中不加入任何文字，保持畫面乾淨">不加文字</span>
+        <span class="chip" data-g="imgtext" data-v="加入一句短標語，使用細明體或無襯線字體，置於畫面留白處">加短標語</span>
+        <span class="chip" data-g="imgtext" data-v="加入品牌名稱，簡潔小字置於角落，不搶主視覺">加品牌名</span>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- 按鈕 -->
+  <div class="btn-row">
+    <button class="btn btn-main" onclick="gen()">產生全部指令 ↗</button>
+    <button class="btn btn-sec" onclick="copyAll()">複製全部</button>
+    <button class="btn btn-sec" onclick="reset()">重設</button>
+  </div>
+
+  <!-- 輸出 -->
+  <div class="output-section">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem">
+      <div class="out-label" style="margin-bottom:0">✍️ 文案指令（貼給 Claude）</div>
+      <button class="btn btn-sec" style="padding:4px 12px;font-size:12px" onclick="copySingle('copy-out','hint-copy')">複製</button>
+    </div>
+    <div class="out-box purple" id="copy-out">請填入上方資訊，再點「產生全部指令」✨</div>
+    <div class="copy-hint" id="hint-copy">✓ 已複製文案指令</div>
+  </div>
+
+  <div class="output-section" style="margin-top:1rem">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem">
+      <div class="out-label" style="margin-bottom:0">🖼️ 圖片指令（貼給任何 AI 生圖工具）</div>
+      <button class="btn btn-sec" style="padding:4px 12px;font-size:12px" onclick="copySingle('img-out','hint-img')">複製</button>
+    </div>
+    <div class="out-box teal" id="img-out">圖片指令將在這裡顯示</div>
+    <div class="copy-hint" id="hint-img">✓ 已複製圖片指令</div>
+  </div>
+
+  <div class="copy-hint" id="hint">✓ 已複製全部</div>
+
+  <div class="tip">
+    💡 <strong>使用流程</strong>：這裡產出指令 → 文案指令貼給 Claude → 圖片指令貼給 AI 生圖工具（Gemini、Midjourney 等）→ 把圖片存下來丟進 Canva 排版 🎨
+  </div>
+
+  <footer class="footer">
+    生活感文案工具 · 為蜜絲P量身打造
+  </footer>
+
+</div>
+
+<script>
+const S = {
+  opening: '從一個溫柔的生活小場景切入（早晨、下班後、睡前…）',
+  product: '像在跟朋友分享生活，產品只是順帶一提，不刻意強調、沒有業配感',
+  tone: '暖暖的、輕鬆自在，像跟熟朋友聊天',
+  length: '150–250字，IG 貼文長度',
+  cta: '不需要明確 CTA，讓感受自然收尾就好',
+  hasproduct: '有產品入鏡：產品自然融入場景，不要像廣告擺拍，像是生活中隨手放著的感覺',
+  mood: '溫暖柔光，像早晨灑進來的陽光，有點朦朧、有點舒服',
+  style: '生活感平鋪攝影（flat lay），像真實生活隨手拍的感覺',
+  ratio: '4:5 直向（IG 貼文最佳比例）',
+  imgtext: '圖片中不加入任何文字，保持畫面乾淨'
+};
+
+// vibes 獨立用 Set 管理複選
+const vibesSet = new Set();
+
+const purpleGroups = ['opening','product','tone','length','cta'];
+
+document.querySelectorAll('.chip').forEach(c => {
+  if (c.dataset.g === 'vibes') {
+    c.addEventListener('click', () => {
+      const v = c.dataset.v;
+      if (vibesSet.has(v)) {
+        vibesSet.delete(v);
+        c.classList.remove('at');
+      } else {
+        vibesSet.add(v);
+        c.classList.add('at');
+      }
+    });
+  } else {
+    c.addEventListener('click', () => {
+      const g = c.dataset.g;
+      const ac = purpleGroups.includes(g) ? 'ap' : 'at';
+      document.querySelectorAll(`.chip[data-g="${g}"]`).forEach(x => x.classList.remove('ap','at'));
+      c.classList.add(ac);
+      S[g] = c.dataset.v;
+    });
+  }
+});
+
+function addCustomVibe() {
+  const input = document.getElementById('vibes-custom');
+  const val = input.value.trim();
+  if (!val) return;
+  // 加入 Set
+  vibesSet.add(val);
+  // 動態新增 chip
+  const chip = document.createElement('span');
+  chip.className = 'chip at';
+  chip.dataset.g = 'vibes';
+  chip.dataset.v = val;
+  chip.textContent = val;
+  chip.addEventListener('click', () => {
+    if (vibesSet.has(val)) {
+      vibesSet.delete(val);
+      chip.classList.remove('at');
+    } else {
+      vibesSet.add(val);
+      chip.classList.add('at');
+    }
+  });
+  document.getElementById('vibes-chips').appendChild(chip);
+  input.value = '';
+}
+
+function gen() {
+  const product = document.getElementById('product').value.trim();
+  const benefit = document.getElementById('benefit').value.trim();
+  const audience = document.getElementById('audience').value.trim();
+  const scene = document.getElementById('scene').value.trim();
+  const imgSubject = document.getElementById('img-subject').value.trim();
+
+  const cl = ['請以頂尖生活感文案高手的角色，幫我撰寫一篇爆款社群貼文。\n核心精神：像真實的人在分享生活，不是在賣東西。',''];
+  if (product) cl.push(`【產品 / 主題】${product}`);
+  if (benefit) cl.push(`【帶給人的改變或感受】${benefit}`);
+  if (audience) cl.push(`【目標讀者】${audience}`);
+  if (scene) cl.push(`【生活場景】${scene}`);
+  cl.push('');
+  cl.push(`【文案開場方式】${S.opening}`);
+  cl.push(`【產品帶入感】${S.product}`);
+  cl.push(`【語氣基調】${S.tone}`);
+  cl.push(`【字數篇幅】${S.length}`);
+  cl.push(`【結尾方向】${S.cta}`);
+  cl.push('');
+  cl.push('【寫作原則】');
+  cl.push('- 不說教、不硬賣，讓感受自然流露');
+  cl.push('- 讀者要先點頭「啊對，我也這樣」，才會繼續讀下去');
+  cl.push('- 細節要有畫面感，像真實的人在說話，不像在寫廣告');
+  cl.push('- 可以有一個小轉折或驚喜，讓人想繼續讀');
+  cl.push('- 語氣流暢自然，像傳訊息給朋友，不過度文藝也不用力');
+  cl.push('- 整篇讀完感覺不到「這是業配」，只覺得「這個人在分享生活」');
+
+  document.getElementById('copy-out').textContent = cl.join('\n');
+
+  const subj = imgSubject || (product ? `與「${product}」相關的生活場景` : '一個溫柔的生活情境');
+  const sceneNote = scene ? `，場景：${scene}` : '';
+  const prodNote = S.hasproduct.startsWith('有產品') && product ? `，畫面中自然出現「${product}」，像隨手放在那裡，不是刻意擺拍` : '';
+
+  const il = [
+    '# 圖片生成指令','',
+    '## 畫面內容',
+    `【主視覺】${subj}${sceneNote}`,
+    `【產品處理】${S.hasproduct}${prodNote}`,
+    `【畫面氛圍】${S.mood}`,
+    `【拍攝風格】${S.style}`,
+    vibesSet.size > 0 ? `【風格感受】${[...vibesSet].join('、')}` : null,
+    `【圖片比例】${S.ratio}`,
+    `【文字處理】${S.imgtext}`,'',
+    '## 構圖與視覺質感',
+    '- 構圖留有適當留白，重心偏下或居中，讓視覺有呼吸感',
+    '- 光影細膩真實，具備電影感景深與層次',
+    '- 色彩飽和度自然，避免過度濾鏡或油畫平滑感','',
+    '## 輸出品質要求',
+    '- 輸出超高解析度圖像（4K 廣色域，印刷級清晰度）',
+    '- 文字與線條邊緣銳利，無鋸齒、無 JPEG 壓縮噪點',
+    '- 禁止出現無法閱讀的偽文字或多餘浮水印',
+    '- 禁止出現 [cite: ] 或任何來源標註類字眼',
+    '- 直接輸出圖像，不需要文字說明'
+  ].filter(l => l !== null);
+
+  document.getElementById('img-out').textContent = il.join('\n');
+}
+
+function copyToClipboard(text, hintId) {
+  const showHint = () => {
+    const h = document.getElementById(hintId);
+    h.style.display = 'block';
+    setTimeout(() => { h.style.display = 'none'; }, 2500);
+  };
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(showHint).catch(() => fallbackCopy(text, showHint));
+  } else {
+    fallbackCopy(text, showHint);
+  }
+}
+
+function fallbackCopy(text, callback) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand('copy'); callback && callback(); } catch(e) {}
+  document.body.removeChild(ta);
+}
+
+function copySingle(boxId, hintId) {
+  gen();
+  const text = document.getElementById(boxId).textContent;
+  copyToClipboard(text, hintId);
+}
+
+function copyAll() {
+  gen();
+  const t1 = document.getElementById('copy-out').textContent;
+  const t2 = document.getElementById('img-out').textContent;
+  const all = `=== 文案指令（Claude）===\n\n${t1}\n\n=== 圖片指令 ===\n\n${t2}`;
+  copyToClipboard(all, 'hint');
+}
+
+function reset() {
+  ['product','benefit','audience','scene','img-subject','vibes-custom'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  vibesSet.clear();
+  document.querySelectorAll('.chip[data-g="vibes"]').forEach(c => c.classList.remove('at'));
+  document.getElementById('copy-out').textContent = '請填入上方資訊，再點「產生全部指令」✨';
+  document.getElementById('img-out').textContent = '圖片指令將在這裡顯示';
+}
+</script>
+</body>
+</html>

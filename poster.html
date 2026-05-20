@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>質感海報靈感製造機 ✨</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FDFBF7;
+    --amber-50: #FFFBEB;
+    --amber-100: #FEF3C7;
+    --amber-200: #FDE68A;
+    --amber-300: #FCD34D;
+    --amber-500: #F59E0B;
+    --amber-700: #B45309;
+    --amber-800: #92400E;
+    --stone-50: #FAFAF9;
+    --stone-100: #F5F5F4;
+    --stone-200: #E7E5E4;
+    --stone-400: #A8A29E;
+    --stone-500: #78716C;
+    --stone-600: #57534E;
+    --stone-700: #44403C;
+    --stone-800: #292524;
+    --emerald-100: #D1FAE5;
+    --emerald-700: #047857;
+    --rose-400: #FB7185;
+    --white: #FFFFFF;
+    --radius-xl: 1rem;
+    --radius-2xl: 1.25rem;
+    --radius-3xl: 1.5rem;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background-color: var(--cream);
+    background-image:
+      radial-gradient(ellipse 60% 40% at 20% 10%, rgba(253,212,122,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 80% 90%, rgba(251,191,136,0.10) 0%, transparent 60%);
+    min-height: 100vh;
+    color: var(--stone-700);
+    padding: 1.5rem 1rem 4rem;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    padding: 2.5rem 0 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+  }
+
+  .icon-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--amber-100), #fff9e6);
+    color: var(--amber-700);
+    border-radius: 50%;
+    margin-bottom: 1.25rem;
+    border: 1.5px solid var(--amber-200);
+    box-shadow: 0 2px 12px rgba(245,158,11,0.15);
+  }
+
+  .header h1 {
+    font-family: 'DM Serif Display', 'Noto Sans TC', serif;
+    font-size: clamp(1.75rem, 5vw, 2.4rem);
+    color: var(--stone-800);
+    letter-spacing: 0.03em;
+    line-height: 1.2;
+    margin-bottom: 0.6rem;
+  }
+
+  .header p {
+    color: var(--stone-500);
+    font-size: 1rem;
+    font-weight: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+  }
+
+  /* ── Card ── */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius-3xl);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(231,229,228,0.7);
+    padding: 2rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.15s forwards;
+  }
+
+  @media (min-width: 640px) {
+    .card { padding: 2.5rem; }
+  }
+
+  /* ── Field groups ── */
+  .field-group { display: flex; flex-direction: column; gap: 0.875rem; }
+
+  .field-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.0625rem;
+    font-weight: 500;
+    color: var(--stone-800);
+  }
+
+  .field-label svg { color: var(--amber-500); flex-shrink: 0; }
+
+  /* ── Orientation pills ── */
+  .orientation-group {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .ori-btn {
+    flex: 1;
+    padding: 0.75rem 0.5rem;
+    border-radius: var(--radius-xl);
+    border: 2px solid transparent;
+    background: var(--stone-50);
+    color: var(--stone-500);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: center;
+  }
+
+  .ori-btn:hover { background: var(--stone-100); }
+
+  .ori-btn.active {
+    background: var(--amber-100);
+    color: var(--amber-800);
+    border-color: var(--amber-200);
+    font-weight: 500;
+  }
+
+  /* ── Inputs & textareas ── */
+  textarea, input[type="text"] {
+    width: 100%;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 0.9375rem;
+    color: var(--stone-700);
+    background: var(--stone-50);
+    border: 1.5px solid var(--stone-200);
+    border-radius: var(--radius-xl);
+    padding: 0.875rem 1rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    resize: vertical;
+    line-height: 1.6;
+  }
+
+  textarea:focus, input[type="text"]:focus {
+    border-color: var(--amber-300);
+    box-shadow: 0 0 0 3px rgba(253,211,77,0.18);
+    background: var(--white);
+  }
+
+  textarea::placeholder, input::placeholder { color: var(--stone-400); }
+
+  /* ── Inner fields box ── */
+  .inner-box {
+    background: rgba(250,250,249,0.6);
+    border: 1px solid var(--stone-100);
+    border-radius: var(--radius-2xl);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 640px) { .inner-box { padding: 1.5rem; } }
+
+  .sub-label {
+    display: block;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--stone-700);
+    margin-bottom: 0.4rem;
+  }
+
+  .hint {
+    font-size: 0.8125rem;
+    color: var(--stone-400);
+    margin-bottom: 0.4rem;
+    line-height: 1.5;
+  }
+
+  /* ── Generate button ── */
+  .btn-generate {
+    width: 100%;
+    padding: 1rem;
+    background: var(--stone-800);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-2xl);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 1.0625rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.25s ease;
+    box-shadow: var(--shadow-md);
+    letter-spacing: 0.02em;
+  }
+
+  .btn-generate:hover {
+    background: var(--stone-700);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.14);
+  }
+
+  .btn-generate:active { transform: scale(0.99); }
+
+  /* ── Result box ── */
+  .result-box {
+    background: linear-gradient(135deg, rgba(255,251,235,0.8), rgba(255,248,220,0.5));
+    border: 1px solid rgba(253,212,77,0.3);
+    border-radius: var(--radius-3xl);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+  }
+
+  .result-box.visible { opacity: 1; transform: translateY(0); }
+
+  .result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .result-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--amber-800);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .btn-copy {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--stone-200);
+    background: var(--white);
+    color: var(--stone-600);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  .btn-copy:hover { background: var(--stone-100); }
+
+  .btn-copy.copied {
+    background: var(--emerald-100);
+    color: var(--emerald-700);
+    border-color: transparent;
+  }
+
+  .result-textarea {
+    height: 260px;
+    background: var(--white);
+    border-color: rgba(253,212,77,0.3);
+    border-radius: var(--radius-2xl);
+    font-size: 0.8125rem;
+    font-family: 'Courier New', monospace;
+    color: var(--stone-600);
+    line-height: 1.7;
+  }
+
+  .result-hint {
+    text-align: center;
+    font-size: 0.8125rem;
+    color: var(--stone-400);
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Divider ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--stone-200), transparent);
+    margin: 0.25rem 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="icon-badge">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3l1.88 5.76a1 1 0 00.95.69h6.07l-4.91 3.57a1 1 0 00-.36 1.12L17.5 20l-4.91-3.57a1 1 0 00-1.18 0L6.5 20l1.88-5.76a1 1 0 00-.36-1.12L3.1 9.45h6.07a1 1 0 00.95-.69z"/>
+      </svg>
+    </div>
+    <h1>質感海報靈感製造機</h1>
+    <p>為你的活動注入一點溫暖的魔法 <span style="color:var(--rose-400)">♥</span></p>
+  </header>
+
+  <!-- Main card -->
+  <div class="card">
+
+    <!-- 1. Orientation -->
+    <div class="field-group">
+      <label class="field-label">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+        1. 想要什麼樣的版面呢？ 📱
+      </label>
+      <div class="orientation-group" id="oriGroup">
+        <button class="ori-btn active" data-id="ig" data-text="4:5 直式（適合 IG 貼文用）">直式 (IG)</button>
+        <button class="ori-btn" data-id="fb" data-text="橫式（適合 FB 貼文）">橫式 (FB)</button>
+        <button class="ori-btn" data-id="square" data-text="1:1 正方形">正方形</button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 2. Style -->
+    <div class="field-group">
+      <label class="field-label">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.88 5.76a1 1 0 00.95.69h6.07l-4.91 3.57a1 1 0 00-.36 1.12L17.5 20l-4.91-3.57a1 1 0 00-1.18 0L6.5 20l1.88-5.76a1 1 0 00-.36-1.12L3.1 9.45h6.07a1 1 0 00.95-.69z"/></svg>
+        2. 描繪一下你心中的畫面吧 🌿
+      </label>
+      <textarea id="style" rows="4" placeholder="例如：充滿自然光影的午後，柔和的奶油色調，畫面有溫暖且豐盛的感覺，讓人覺得放鬆自在..."></textarea>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 3. Text content -->
+    <div class="field-group">
+      <label class="field-label">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg>
+        3. 點亮畫面的文字 ✍🏻
+      </label>
+
+      <div class="inner-box">
+        <div>
+          <span class="sub-label">最想大聲說的主標題 ✨</span>
+          <input type="text" id="title" placeholder="例如：初秋限定燕麥色陶瓷馬克杯...">
+        </div>
+        <div>
+          <span class="sub-label">輕輕點綴的副標題（選填）🍃</span>
+          <input type="text" id="subtitle" placeholder="例如：感受手心的溫度 ☕️...">
+        </div>
+        <div>
+          <span class="sub-label">一定要寫上去的關鍵資訊 📌</span>
+          <span class="hint">提醒小精靈絕對不能漏掉的時間、地點、費用或聯絡人</span>
+          <textarea id="mustInclude" rows="3" placeholder="例如：&#10;• 活動時間：5月23日 下午 2:00&#10;• 報名請洽：鄭立娜 0982-xxx-xxx"></textarea>
+        </div>
+        <div>
+          <span class="sub-label">想請小精靈幫忙濃縮的故事（選填）💭</span>
+          <span class="hint">把長篇大論貼在這裡，我們會讓畫面只留下最動人的精華</span>
+          <textarea id="referenceStory" rows="4" placeholder="例如：這次活動主要是為了回饋一直以來支持我們的 VIP 客戶，我們特別邀請了知名的烘焙老師，希望大家在手作蛋糕的過程中，能感受到滿滿的療癒感，並且把這份甜蜜帶回家跟家人分享..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Generate button -->
+    <div>
+      <button class="btn-generate" id="generateBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.88 5.76a1 1 0 00.95.69h6.07l-4.91 3.57a1 1 0 00-.36 1.12L17.5 20l-4.91-3.57a1 1 0 00-1.18 0L6.5 20l1.88-5.76a1 1 0 00-.36-1.12L3.1 9.45h6.07a1 1 0 00.95-.69z"/></svg>
+        調配專屬繪圖咒語
+      </button>
+    </div>
+
+  </div><!-- /card -->
+
+  <!-- Result -->
+  <div class="result-box" id="resultBox" style="margin-top:1.5rem;">
+    <div class="result-header">
+      <span class="result-title">✨ 你的魔法咒語準備好囉！</span>
+      <button class="btn-copy" id="copyBtn">
+        <svg id="copyIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        <span id="copyLabel">複製咒語</span>
+      </button>
+    </div>
+    <textarea class="result-textarea" id="resultText"></textarea>
+    <p class="result-hint">現在你可以隨心所欲地微調上面的咒語，確認完美後再複製貼給 AI 喔！✨</p>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+  // Orientation selection
+  let currentOri = { id: 'ig', text: '4:5 直式（適合 IG 貼文用）' };
+
+  document.getElementById('oriGroup').addEventListener('click', e => {
+    const btn = e.target.closest('.ori-btn');
+    if (!btn) return;
+    document.querySelectorAll('.ori-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentOri = { id: btn.dataset.id, text: btn.dataset.text };
+  });
+
+  // Generate
+  document.getElementById('generateBtn').addEventListener('click', () => {
+    const style       = document.getElementById('style').value.trim();
+    const title       = document.getElementById('title').value.trim();
+    const subtitle    = document.getElementById('subtitle').value.trim();
+    const mustInclude = document.getElementById('mustInclude').value.trim();
+    const refStory    = document.getElementById('referenceStory').value.trim();
+
+    const prompt = buildPrompt({ style, title, subtitle, mustInclude, refStory });
+
+    const resultText = document.getElementById('resultText');
+    resultText.value = prompt;
+
+    const box = document.getElementById('resultBox');
+    box.classList.add('visible');
+    setTimeout(() => box.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+
+    // Reset copy button
+    document.getElementById('copyLabel').textContent = '複製咒語';
+    document.getElementById('copyBtn').classList.remove('copied');
+    resetCopyIcon();
+  });
+
+  // Copy
+  document.getElementById('copyBtn').addEventListener('click', () => {
+    const text = document.getElementById('resultText').value;
+    if (!text) return;
+
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      document.getElementById('copyLabel').textContent = '已經複製囉！🌸';
+      document.getElementById('copyBtn').classList.add('copied');
+      setCheckIcon();
+      setTimeout(() => {
+        document.getElementById('copyLabel').textContent = '複製咒語';
+        document.getElementById('copyBtn').classList.remove('copied');
+        resetCopyIcon();
+      }, 3000);
+    } catch(e) {}
+    document.body.removeChild(ta);
+  });
+
+  function setCheckIcon() {
+    document.getElementById('copyIcon').innerHTML = '<polyline points="20 6 9 17 4 12"/>';
+  }
+  function resetCopyIcon() {
+    document.getElementById('copyIcon').innerHTML = '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>';
+  }
+
+  function buildPrompt({ style, title, subtitle, mustInclude, refStory }) {
+    const styleText = style || '簡單、清晰、吸引人、豐盛的感覺';
+
+    let textBlock = '';
+    if (title)       textBlock += `* 主標題：\n"${title}"\n\n`;
+    if (subtitle)    textBlock += `* 副標題：\n"${subtitle}"\n\n`;
+    if (mustInclude) textBlock += `* 關鍵資訊：\n"${mustInclude}"\n\n`;
+    if (refStory)    textBlock += `* 故事與情境參考（請吸收故事，濃縮成 1~2 句充滿溫度的短文案排版在圖中）：\n"${refStory}"\n\n`;
+    if (!title && !subtitle && !mustInclude && !refStory)
+      textBlock = '（未提供文字，請讓畫面自然留白）\n\n';
+
+    return `請依照以下設定繪製圖像：
+
+【海報基本資訊】
+* 版型方向：${currentOri.text}
+* 視覺風格：${styleText}
+* 禁止字眼：禁止出現 類型的字眼。
+
+【海報需渲染的文字內容】
+(💡 溫馨提醒畫圖小精靈：只需將引號內的文字排版在海報中，請不要把「主標題」、「關鍵資訊」等分類標籤也畫上去喔！)
+
+${textBlock}---
+
+# Role Definition 你現在是搭載「多模態視覺認知引擎 (Multi-modal Visual Cognitive Engine)」的高階圖像修復專家。你具備上下文感知 OCR (Context-aware OCR) 與生成式圖像增強 (Generative Image Upscaling) 的核心能力。 
+
+# Mission Objective 執行「語意級圖像重構 (Semantic-Level Image Reconstruction)」。針對輸入的文案與風格需求，利用邏輯推演佈局文字內容，並輸出 4K 廣色域的高傳真圖像。 
+
+# Execution Protocol (思維鏈與執行協議) 
+1. 【光學字元邏輯推演】：確保所有繁體中文內容符合邏輯，不遺漏任何報名關鍵資訊。
+2. 【同構視覺合成】：精確捕捉指定風格的設計語言（配色、材質、光影），呈現平衡且具吸引力的版面配置。
+3. 【向量級細節渲染】：文字與線條邊緣必須呈現「印刷級」的清晰度，徹底消除模糊感與邊緣溢色。
+
+# Exclusion Criteria (負向約束)
+* 嚴禁產生無法閱讀的「偽文字」或簡體中文。
+* 嚴禁改變原圖的關鍵構圖結構。
+* 嚴禁輸出模糊、低對比或過度平滑的油畫感圖像。
+
+# Output Output the reconstructed image ONLY. No textual explanation required.`;
+  }
+</script>
+</body>
+</html>
